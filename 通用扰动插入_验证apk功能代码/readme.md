@@ -1,0 +1,15 @@
+- `apk_data`:apk数据
+- `classifier`:分类器权重
+- `test_data`：测试数据，主要是在数据上测试扰动有效性
+- `universal_pertubation`:通用扰动相关数据
+- `apktool`：打包解包工具
+- `Classifier.py`:分类器类
+- `demo.py`:可以比较两个apk之间的调用次数矩阵差
+- `evaluate_apk.py`:评估apk,判断其为良性还是恶意
+- `Family.txt`:9个官方`family`粒度
+- `GCN_Model.py`:GCN模型
+- `insert_pertubation.py`:扰动插入脚本，目前为完成，是通过手动操作的
+- `per.py`:查看扰动代码
+- `select_sample.py`:apk挑选
+- `smali_process.py`:从apk提取调用矩阵
+- `targetF_Model`:本地替代模型

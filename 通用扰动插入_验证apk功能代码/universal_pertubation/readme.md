@@ -1,0 +1,3 @@
+- `per`：通用扰动对应的调用次数数组
+- `classes.jar`：依据通用扰动和`Nop`开发的`java`包
+- `classes-jardex-out`：`classes.jar`对应的`smali`文件
