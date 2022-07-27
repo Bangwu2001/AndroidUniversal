@@ -184,5 +184,5 @@ if __name__=="__main__":
         accuracy = accuracy_score(result, train_label)
         print('The accuracy of method %s is %f'%(method,accuracy))
 
-    with open('log.txt','a+') as f:
-        f.write('the classifier method: '+method+' the accuracy is :'+ str(result)+'\n')
+        with open('log.txt','a+') as f:
+            f.write('the classifier method: '+method+' the accuracy is :'+ str(accuracy)+'\n')
