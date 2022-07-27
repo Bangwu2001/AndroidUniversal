@@ -89,12 +89,13 @@ class MarkovClassifier():
         return result
 
     def StandScale(self, x):
-        for index in range(x.shape[0]):
-            for row in range(x.shape[2]):
-                sumer = np.sum(x[index, :, row, :])
+        data = x.copy()
+        for index in range(data.shape[0]):
+            for row in range(data.shape[2]):
+                sumer = np.sum(data[index, :, row, :])
                 if sumer != 0:
-                    x[index, :, row, :] /= sumer
-        return x
+                    data[index, :, row, :] /= sumer
+        return data
 
     def CNN1(self, x):
         x = self.StandScale(x)
@@ -168,12 +169,13 @@ class MarkovClassifier():
 
 if __name__=="__main__":
     #加载x
-    data_path = "dataset/markov_evaluate_1000_X"
-    label_path = "dataset/markov_evaluate_1000_Y"
+    data_path = "generator_dataset/markov_evaluate_1000_X_adv_transform_v5_10_50_100_0.5_0.5"
+    label_path = "generator_dataset/markov_evaluate_1000_Y_adv_transform_v5_10_50_100_0.5_0.5"
     with open(data_path, "rb") as f:
-        train_data = pickle.load(f)
+        train_data = np.array(pickle.load(f))
+        # print(train_data)
     with open(label_path, "rb") as f:
-        train_label = pickle.load(f)
+        train_label =  np.array(pickle.load(f))
 
     classifiers = ['CNN1','CNN2','DNN','RF','KNN1','KNN3','AdaBoost','GCN']
     myClasss=MarkovClassifier(train_data)

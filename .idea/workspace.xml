@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="73ffa31b-8525-46ca-80ef-a90f74be8512" name="Default Changelist" comment="MODIFY THE CLASSIFIER.PY FILE">
+    <list default="true" id="73ffa31b-8525-46ca-80ef-a90f74be8512" name="Default Changelist" comment="ADD LOG FUNCTION">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/扰动生成算法/盲扰动_pytorch/family/AE_GAN_CW_Transform_v5.py" beforeDir="false" afterPath="$PROJECT_DIR$/扰动生成算法/盲扰动_pytorch/family/AE_GAN_CW_Transform_v5.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/扰动生成算法/盲扰动_pytorch/family/classifier.py" beforeDir="false" afterPath="$PROJECT_DIR$/扰动生成算法/盲扰动_pytorch/family/classifier.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/扰动生成算法/盲扰动_pytorch/family/generator_dataset/markov_evaluate_1000_X_adv_transform_v3_10_50_100" beforeDir="false" afterPath="$PROJECT_DIR$/扰动生成算法/盲扰动_pytorch/family/generator_dataset/markov_evaluate_1000_X_adv_transform_v3_10_50_100" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -109,6 +112,27 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="AE_GAN_CW_Transform_v3" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="通用对抗扰动" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/扰动生成算法/盲扰动_pytorch/family" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/扰动生成算法/盲扰动_pytorch/family/AE_GAN_CW_Transform_v3.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="AE_GAN_CW_Transform_v5" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="通用对抗扰动" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -172,34 +196,13 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="evaluate_apk" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="通用对抗扰动" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/优化方法生成通用对抗扰动" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/优化方法生成通用对抗扰动/evaluate_apk.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Python.classifier" />
-        <item itemvalue="Python.Classifier" />
         <item itemvalue="Python.AE_GAN_CW_Transform_v5" />
+        <item itemvalue="Python.AE_GAN_CW_Transform_v3" />
+        <item itemvalue="Python.Classifier" />
         <item itemvalue="Python.AE_GAN_CW_Transform_v0" />
-        <item itemvalue="Python.evaluate_apk" />
       </list>
     </recent_temporary>
   </component>
@@ -229,7 +232,14 @@
       <option name="project" value="LOCAL" />
       <updated>1658906601515</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="ADD LOG FUNCTION">
+      <created>1658906743081</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1658906743081</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -269,7 +279,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="NO THING CHANGED, JUST HAVE A TRY" />
     <MESSAGE value="MODIFY THE CLASSIFIER.PY FILE" />
-    <option name="LAST_COMMIT_MESSAGE" value="MODIFY THE CLASSIFIER.PY FILE" />
+    <MESSAGE value="ADD LOG FUNCTION" />
+    <option name="LAST_COMMIT_MESSAGE" value="ADD LOG FUNCTION" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/优化方法生成通用对抗扰动/Classifier.py">
