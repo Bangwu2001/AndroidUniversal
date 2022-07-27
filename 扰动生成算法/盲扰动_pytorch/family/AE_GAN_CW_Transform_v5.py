@@ -278,7 +278,7 @@ def train():
             per_count=(torch.sum(per)/len(testG_data))
             per_ratio=(torch.sum(per)/torch.sum(testG_data)).detach().numpy()
             print("Epoch:%d || test_acc:%.3f || per_count:%.2f || per_ratio:%.3f"%(epoch,correct/testG_data.shape[0],per_count,per_ratio))
-            print(per[0,0])
+            # print(per[0,0])
             test_acc.append(correct/testG_data.shape[0])
 
 
@@ -288,7 +288,7 @@ def train():
     plt.title("train&test acc")
     plt.plot(train_acc,label="train")
     plt.plot(test_acc,label="test")
-    plt.savefig("generator_result/transform_v5_10_50_100_0.5_0.5")
+    plt.savefig("generator_result/transform_v5_10_50_100_0.5_0.5.jpg")
     plt.show()
 
 #对抗样本生成测试
@@ -350,8 +350,8 @@ def evaluate():
 
 if __name__=="__main__":
     pass
-    # train()
-    # evaluate()
+    train()
+    evaluate()
 #     pass
     # pool=torch.randn(size=(100,1,11,11))
     # inx=torch.randn(size=(10,1,11,11))

@@ -62,8 +62,31 @@ class MarkovClassifier():
 
     """
 
-    def __init__(self, clf_type):
-        self.clf_type = clf_type
+    def __init__(self,data):
+        # self.clf_type = clf_type
+        self.x = data
+        self.classification=['CNN1','CNN2','DNN','RF','KNN1','KNN3','AdaBoost','GCN']
+
+    def get_answer(self,clf_type):
+        if clf_type == 'CNN1':
+            result = self.CNN1(self.x)
+        elif clf_type == 'CNN2':
+            result = self.CNN2(self.x)
+        elif clf_type == 'DNN':
+            result = self.DNN(self.x)
+        elif clf_type == 'RF':
+            result = self.RF(self.x)
+        elif clf_type == 'KNN1':
+            result = self.KNN1(self.x)
+        elif clf_type == 'KNN3':
+            result = self.KNN3(self.x)
+        elif clf_type == 'AdaBoost':
+            result = self.AdaBoost(self.x)
+        elif clf_type == 'GCN':
+            result = self.GCN(self.x)
+        else:
+            assert clf_type in self.classification, 'No corresponding classifier %s, please check again'%(clf_type)
+        return result
 
     def StandScale(self, x):
         for index in range(x.shape[0]):
@@ -152,6 +175,14 @@ if __name__=="__main__":
     with open(label_path, "rb") as f:
         train_label = pickle.load(f)
 
-    myClasss=MarkovClassifier("DNN")
-    result=myClasss.GCN(train_data)
-    print(accuracy_score(result,train_label))
+    classifiers = ['CNN1','CNN2','DNN','RF','KNN1','KNN3','AdaBoost','GCN']
+    myClasss=MarkovClassifier(train_data)
+    for method in classifiers:
+        print('Now test method:',method)
+        result = myClasss.get_answer(method)
+        # print(result)
+        accuracy = accuracy_score(result, train_label)
+        print('The accuracy of method %s is %f'%(method,accuracy))
+
+    with open('log.txt','a+') as f:
+        f.write('the classifier method: '+method+' the accuracy is :'+ str(result)+'\n')
