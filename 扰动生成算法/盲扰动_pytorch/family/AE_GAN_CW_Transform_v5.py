@@ -115,13 +115,14 @@ class GModel(nn.Module):
         self.layer6=nn.GELU()
         self.layer7=nn.ConvTranspose2d(in_channels=4,out_channels=1,kernel_size=3,stride=1)
 
+        self.layer8=nn.Tanh()
 
     def forward(self,inx):
         x=self.layer2(self.layer1(inx))
         x=self.layer4(self.layer3(x))
         x=self.layer6(self.layer5(x))
         x=self.layer7(x)
-
+        x = self.layer8(x)
         return x
 
 
@@ -199,6 +200,9 @@ class Attack():
         with open(self.up_file, "rb") as f:
             self.universal_per = pickle.load(f)
 
+    def get_round_with_gradient(self,x):
+        return torch.round(x) - x.detach() + x
+
     def get_adv(self,original, GP):
         per_fanal = ( torch.clamp(self.universal_per + GP, min=0.)) * self.mask
         per_fanal = torch.maximum(per_fanal, self.noise)
@@ -252,8 +256,15 @@ class Attack():
             for index in range(batch_trainG_data.shape[0]//self.batch_size):
                 x=batch_trainG_data[index*self.batch_size:(index+1)*self.batch_size]
 
-                per=model(benginData,x+self.universal_per)   ##### add universal perunation before the generator
-                x_adv,per = self.get_adv(x, per)
+                probability=model(benginData,x+self.universal_per)   ##### add universal perunation before the generator
+                random = torch.rand(1)
+                per = self.get_round_with_gradient((torch.abs(probability) > random).type(torch.float32) * probability)
+
+
+
+                # per = torch.clamp(per,min=0)
+                x_adv,per_fianl = self.get_adv(x, per)
+
                 x_adv_markov=StandardScale(x_adv)
                 x_adv_pred=targetF(x_adv_markov)
                 x_adv_pred2=CNNModel(x_adv_markov)
@@ -261,8 +272,14 @@ class Attack():
                 correct2= torch.sum(x_adv_pred2 < 0.5).detach().numpy()
                 epoch_correct+=correct
                 epoch_correct_2+=correct2
-                loss1=torch.sum(per)/torch.sum(x)
-                loss2=0.5*torch.sum(torch.clamp(0.5-x_adv_pred,min=0))/x.shape[0]+0.5*torch.sum(torch.clamp(0.5-x_adv_pred2,min=0))/x.shape[0]
+                # loss1=torch.sum(per_fianl)/torch.sum(x)
+                # print(per.shape)
+                # print(torch.sum(per,axis=(1,2,3)).shape)
+                # input()
+                # loss1 = torch.sum(torch.clamp( torch.sum(torch.abs(per),axis=(1,2,3)) - 30,min=0))
+
+                loss1 = torch.sum(torch.abs(per) )/ torch.sum(x)
+                loss2=0.5*torch.sum(torch.clamp(1-x_adv_pred,min=0))/x.shape[0]+0.5*torch.sum(torch.clamp(1-x_adv_pred2,min=0))/x.shape[0]
 
                 loss = self.alpha * loss1 + self.beta * loss2
 
@@ -282,12 +299,19 @@ class Attack():
 
             #测试集
             with torch.no_grad():
-                per = model(benginData, testG_data+self.universal_per).int().float()
-                testG_data_adv,per = self.get_adv(testG_data, per)
+                probability = model(benginData, testG_data+self.universal_per).int().float()
+                random = torch.tensor(0.5)
+                per = self.get_round_with_gradient((torch.abs(probability) > random).type(torch.float32) * probability)
+
+
+                testG_data_adv,per_fianl = self.get_adv(testG_data, per)
+                # print(per[0])
+
                 testG_data_adv_pred = targetF(StandardScale(testG_data_adv))
                 correct = torch.sum(testG_data_adv_pred < 0.5).detach().numpy()
-                per_count=(torch.sum(per)/len(testG_data))
-                per_ratio=(torch.sum(per)/torch.sum(testG_data)).detach().numpy()
+                # print(per_fi?
+                per_count=(torch.sum(per_fianl)/len(per_fianl))
+                per_ratio=(torch.sum(per_fianl)/torch.sum(testG_data)).detach().numpy()
                 print("Epoch:%d || test_acc:%.3f || per_count:%.2f || per_ratio:%.3f"%(epoch,correct/testG_data.shape[0],per_count,per_ratio))
                 # print(per[0,0])
                 test_acc.append(correct/testG_data.shape[0])
@@ -328,14 +352,23 @@ class Attack():
         clean_acc=torch.sum(clean_pred<0.5).detach().numpy()/len(evaluate_x)
 
         #生成扰动
-        per=generatorModel.forward(benginData,evaluate_x+self.universal_per).int().float()
-        evaluate_x_adv,per = self.get_adv(evaluate_x, per)
+        probability=generatorModel.forward(benginData,evaluate_x+self.universal_per).int().float()
+        random = torch.tensor(0.5)
+        per = self.get_round_with_gradient((torch.abs(probability) > random).type(torch.float32) * probability)
+        evaluate_x_adv,per_fianl = self.get_adv(evaluate_x, per)
+
+        for i in range(2):
+            probability = generatorModel.forward(benginData, evaluate_x_adv + self.universal_per).int().float()
+            random = torch.tensor(0.5)
+            per = self.get_round_with_gradient((torch.abs(probability) > random).type(torch.float32) * probability)
+            evaluate_x_adv, per_fianl = self.get_adv(evaluate_x_adv, per)
+
         adv_pred=targetF.forward(StandardScaleNotInplace(evaluate_x_adv))
         adv_acc=torch.sum(adv_pred<0.5).detach().numpy()/len(evaluate_x_adv)
 
         #计算平均扰动量和比例
-        average_per_count=(torch.sum(per)/len(per)).detach().numpy()
-        average_per_ratio=(torch.sum(per)/torch.sum(evaluate_x)).detach().numpy()
+        average_per_count=(torch.sum(per_fianl)/len(per_fianl)).detach().numpy()
+        average_per_ratio=(torch.sum(per_fianl)/torch.sum(evaluate_x)).detach().numpy()
 
         #对抗样本存储
         with open(self.output_file+"/markov_evaluate_1000_X_adv_transform_v5_10_50_100_0.5_0.5","wb") as f:
@@ -353,17 +386,17 @@ if __name__=="__main__":
     parser.add_argument(
         '--alpha',
         type=int,
-        default=5,
+        default=30,
         help="the weight of pertubaiton amount")
     parser.add_argument(
         '--beta',
         type=int,
         default=50,
-        help="the weight of attack success")
+        help="the weight of attack success rate")
     parser.add_argument(
         '--epochs',
         type=int,
-        default=30,
+        default=15,
         help="training epochs")
     parser.add_argument(
         '--batch_size',
@@ -384,11 +417,11 @@ if __name__=="__main__":
         '--output_file',
         type=str,
         default='generator_dataset/',
-        help="the file path of universe pertubation")
+        help="the file path of output")
 
     args = parser.parse_args()
     attack = Attack(args)
-    attack.train()
+    # attack.train()
     attack.evaluate()
 
 
